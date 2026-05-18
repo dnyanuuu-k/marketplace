@@ -34,4 +34,15 @@ if (url.includes("railway.internal")) {
   process.exit(1);
 }
 
+if (
+  (url.includes(".rlwy.net") || url.includes("railway.app")) &&
+  !url.includes("sslaccept=")
+) {
+  console.warn(
+    "\n[build] Warning: Railway MySQL usually needs ?sslaccept=strict on DATABASE_URL.\n" +
+      "Without it you may see P1017 (Server has closed the connection).\n" +
+      "Example: .../railway?sslaccept=strict&connection_limit=1\n"
+  );
+}
+
 console.log("[build] DATABASE_URL looks valid for MySQL (host hidden).");
