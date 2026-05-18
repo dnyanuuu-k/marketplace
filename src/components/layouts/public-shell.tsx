@@ -17,6 +17,7 @@ import { useAuthStore } from "@/store/auth";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { CommandPalette, useCommandPalette } from "@/components/shared/command-palette";
+import { SITE_NAME } from "@/lib/brand";
 
 export function PublicShell({ children }: { children: React.ReactNode }) {
   const { theme, setTheme } = useTheme();
@@ -37,10 +38,10 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
             className="flex items-center gap-2 mr-6 shrink-0"
           >
             <div className="size-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">M</span>
+              <span className="text-primary-foreground font-bold text-sm">A</span>
             </div>
             <span className="font-semibold text-foreground hidden sm:inline">
-              Marketplace
+              {SITE_NAME}
             </span>
           </button>
 
@@ -196,12 +197,12 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
             <div className="col-span-2 md:col-span-2">
               <div className="flex items-center gap-2 mb-4">
                 <div className="size-8 rounded-lg bg-primary flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-sm">M</span>
+                  <span className="text-primary-foreground font-bold text-sm">A</span>
                 </div>
-                <span className="font-semibold">Marketplace</span>
+                <span className="font-semibold">{SITE_NAME}</span>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed mb-6 max-w-sm">
-                The premier platform connecting buyers with talented digital creators. Secure, transparent, and built for the future of digital commerce.
+                Premium digital products from Albos Technology — HRMS, garage software, and enterprise solutions for growing businesses.
               </p>
 
               {/* Newsletter signup */}
@@ -356,7 +357,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
           {/* Bottom bar */}
           <div className="mt-12 pt-6 border-t border-border/50 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
-              &copy; {new Date().getFullYear()} Marketplace. All rights reserved.
+              &copy; {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
             </p>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <span>Built with Next.js & shadcn/ui</span>

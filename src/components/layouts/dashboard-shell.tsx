@@ -66,6 +66,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useNavigationStore } from "@/store/navigation";
 import { useAuthStore, type UserRole } from "@/store/auth";
 import { cn } from "@/lib/utils";
+import { SITE_NAME } from "@/lib/brand";
 import { apiFetch, apiPatch } from "@/lib/api-client";
 import { CommandPalette, useCommandPalette } from "@/components/shared/command-palette";
 import { NotificationDropdown, type Notification } from "@/components/shared/notification-dropdown";
@@ -491,7 +492,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             <div className="flex items-center h-16 px-4 border-b border-border/60 shrink-0">
               <div className="flex items-center gap-2.5 overflow-hidden">
                 <div className="size-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/20">
-                  <span className="text-white font-bold text-sm">M</span>
+                  <span className="text-white font-bold text-sm">A</span>
                 </div>
                 <AnimatePresence>
                   {!collapsed && (
@@ -502,7 +503,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                       transition={{ duration: 0.2 }}
                       className="font-semibold text-foreground whitespace-nowrap overflow-hidden"
                     >
-                      Marketplace
+                      {SITE_NAME}
                     </motion.span>
                   )}
                 </AnimatePresence>
@@ -606,9 +607,9 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                 <SheetHeader className="h-16 flex flex-row items-center px-4 border-b border-border">
                   <div className="flex items-center gap-2">
                     <div className="size-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
-                      <span className="text-white font-bold text-sm">M</span>
+                      <span className="text-white font-bold text-sm">A</span>
                     </div>
-                    <SheetTitle className="font-semibold">Marketplace</SheetTitle>
+                    <SheetTitle className="font-semibold">{SITE_NAME}</SheetTitle>
                   </div>
                 </SheetHeader>
                 <ScrollArea className="flex-1 py-2 custom-scroll">

@@ -14,6 +14,8 @@
     "db:migrate": "prisma migrate dev",
     "db:reset": "prisma migrate reset",
     "db:seed": "bunx tsx prisma/seed.ts",
+    "db:seed:projects": "bunx tsx scripts/seed-projects.ts",
+    "db:seed:all": "npm run db:seed && npm run db:seed:projects",
     "docker:build": "docker compose build",
     "docker:up": "docker compose up -d --build",
     "docker:down": "docker compose down"

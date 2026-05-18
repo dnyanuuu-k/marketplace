@@ -59,6 +59,7 @@ import { useAuthStore } from "@/store/auth";
 import { toast } from "sonner";
 import { apiGet } from "@/lib/api-client";
 import { cn } from "@/lib/utils";
+import { formatPrice } from "@/lib/format-price";
 
 // ─── Types ───
 
@@ -71,6 +72,7 @@ interface Project {
   category: "DESIGN" | "DEVELOPMENT" | "WRITING" | "MARKETING" | "VIDEO" | "MUSIC" | "ANALYTICS" | "OTHER";
   status: "DRAFT" | "PUBLISHED" | "PAUSED" | "ARCHIVED";
   price: number;
+  currency?: string;
   thumbnailUrl: string | null;
   images: string;
   tags: string;
@@ -388,7 +390,7 @@ function ProjectGridCard({
               </span>
             </div>
             <span className="text-base font-bold text-emerald-600 dark:text-emerald-400">
-              ${project.price.toFixed(2)}
+              {formatPrice(project.price, project.currency)}
             </span>
           </div>
         </CardContent>
@@ -501,7 +503,7 @@ function ProjectListCard({
                   </span>
                 </div>
                 <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
-                  ${project.price.toFixed(2)}
+                  {formatPrice(project.price, project.currency)}
                 </span>
               </div>
             </div>
@@ -614,7 +616,7 @@ function FeaturedProjectCard({
             {/* Price + CTA */}
             <div className="flex items-center gap-3 mt-3">
               <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-                ${project.price.toFixed(2)}
+                {formatPrice(project.price, project.currency)}
               </span>
               <Button
                 className="bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-500/20 transition-all duration-200 hover:scale-[1.01] active:scale-[0.99]"

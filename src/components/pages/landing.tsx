@@ -490,17 +490,16 @@ export function LandingPage() {
               </div>
 
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-[1.05]">
-                Where{" "}
+                Welcome to{" "}
                 <span className="bg-gradient-to-r from-emerald-600 to-teal-500 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent">
-                  Talent
+                  Albostech
                 </span>{" "}
-                Meets{" "}
                 <span className="bg-gradient-to-r from-violet-600 to-purple-500 dark:from-violet-400 dark:to-purple-300 bg-clip-text text-transparent">
-                  Opportunity
+                  Market
                 </span>
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground max-w-xl mb-10 leading-relaxed">
-                Discover, purchase, and sell premium digital products and services. From design assets to custom development — all in one secure, transparent platform.
+                Discover enterprise software from Albos Technology — HRMS, Garage Management, and more. Buy with confidence from verified creators.
               </p>
               <div className="flex items-center gap-4 flex-wrap">
                 <Button
@@ -1121,7 +1120,7 @@ export function LandingPage() {
                 role: "CTO at DataSync",
                 avatar: "MJ",
                 rating: 5,
-                quote: "Finding reliable developers used to be a nightmare. Marketplace's verification process means I can hire with confidence. The real-time chat makes collaboration seamless.",
+                quote: "Albostech Market made it easy to evaluate and purchase our HRMS. Albos Technology's verification and documentation gave us confidence before checkout.",
                 color: "violet",
               },
               {

@@ -237,6 +237,8 @@ async function main() {
   // Clean all tables (respect FK order)
   console.log('🧹 Cleaning existing data...');
   const tables = [
+    'ProjectReview',
+    'Project',
     'NotificationPref',
     'Notification',
     'AuditLog',
@@ -304,6 +306,34 @@ async function main() {
   // ─── 3. Create Authors ──────────────────────────────────────────
   console.log('✍️ Creating Authors...');
   const authors = [];
+
+  const albostechAuthor = await prisma.user.create({
+    data: {
+      name: 'Chandra Prakash Singh',
+      email: 'author@albostech.com',
+      passwordHash: defaultPasswordHash,
+      role: 'AUTHOR',
+      status: 'ACTIVE',
+      avatarUrl: 'https://api.dicebear.com/7.x/notionists/svg?seed=albostech',
+      emailVerified: new Date(),
+      commissionRate: 0.12,
+      profile: {
+        create: {
+          bio: 'Founder of Albos Technology. Building enterprise HRMS and Garage Management solutions for SMEs and automobile workshops across India.',
+          skills: '["Next.js", "Node.js", "MongoDB", "React Native", "Express.js", "Enterprise SaaS", "HR Tech"]',
+          portfolioImages: '["/projects/hrms-login.png", "/projects/garage-admin-login.png"]',
+          socialLinks: '{"website":"https://albostech.com","linkedin":"https://linkedin.com/company/albos-technology"}',
+          location: 'Pune, Maharashtra, India',
+          coverImageUrl: '/projects/hrms-dashboard.png',
+          isVerified: true,
+          totalSales: 24,
+          averageRating: 4.9,
+        },
+      },
+    },
+  });
+  authors.push(albostechAuthor);
+
   const authorNames = [
     { first: 'Alex', last: 'Rivera' },
     { first: 'Maya', last: 'Patel' },
@@ -562,11 +592,15 @@ async function main() {
     { key: 'commission_rate', value: '20' },
     { key: 'payout_schedule', value: 'weekly' },
     { key: 'min_payout', value: '50' },
-    { key: 'platform_name', value: 'MarketPro' },
+    { key: 'platformName', value: 'Albostech Market' },
+    { key: 'platform_name', value: 'Albostech Market' },
+    { key: 'platformDescription', value: 'Premium digital products and enterprise software from Albos Technology creators.' },
+    { key: 'baseUrl', value: 'https://albostech.com' },
     { key: 'max_dispute_days', value: '30' },
     { key: 'auto_payout', value: 'true' },
     { key: 'require_verification', value: 'true' },
-    { key: 'support_email', value: 'support@marketpro.dev' },
+    { key: 'supportEmail', value: 'support@albostech.com' },
+    { key: 'support_email', value: 'support@albostech.com' },
   ];
 
   for (const setting of settings) {

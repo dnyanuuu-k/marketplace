@@ -150,7 +150,7 @@ export function AdminSettingsPage() {
               <div className="space-y-2">
                 <Label>Platform Name</Label>
                 <Input
-                  value={get("platformName", "Digital Marketplace")}
+                  value={get("platformName", "Albostech Market")}
                   onChange={(e) => set("platformName", e.target.value)}
                 />
               </div>
@@ -180,7 +180,7 @@ export function AdminSettingsPage() {
               <Button
                 onClick={() =>
                   saveSection([
-                    { key: "platformName", value: get("platformName", "Digital Marketplace") },
+                    { key: "platformName", value: get("platformName", "Albostech Market") },
                     { key: "platformDescription", value: get("platformDescription", "") },
                     { key: "supportEmail", value: get("supportEmail", "") },
                     { key: "baseUrl", value: get("baseUrl", "") },

@@ -65,6 +65,7 @@ import { useAuthStore } from "@/store/auth";
 import { toast } from "sonner";
 import { apiGet, apiPost } from "@/lib/api-client";
 import { cn } from "@/lib/utils";
+import { formatPrice } from "@/lib/format-price";
 
 // ─── Types ───
 
@@ -90,6 +91,7 @@ interface Project {
   category: string;
   status: string;
   price: number;
+  currency?: string;
   thumbnailUrl: string | null;
   images: string | string[];
   tags: string | string[];
@@ -807,7 +809,7 @@ function PurchaseDialog({
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Project Price</span>
-              <span className="font-medium">${project.price.toFixed(2)}</span>
+              <span className="font-medium">{formatPrice(project.price, project.currency)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Platform Fee</span>
@@ -817,7 +819,7 @@ function PurchaseDialog({
             <div className="flex justify-between font-semibold">
               <span>Total</span>
               <span className="text-emerald-600 dark:text-emerald-400 text-lg">
-                ${project.price.toFixed(2)}
+                {formatPrice(project.price, project.currency)}
               </span>
             </div>
           </div>
@@ -1389,7 +1391,7 @@ export function ProjectDetailPage() {
                               <span className="text-xs text-muted-foreground">({p.reviewCount})</span>
                             </div>
                             <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mt-1">
-                              ${p.price.toFixed(2)}
+                              {formatPrice(p.price, p.currency)}
                             </p>
                           </div>
                         </div>
@@ -1471,7 +1473,7 @@ function PurchaseSidebar({
           {/* Price */}
           <div className="flex items-baseline gap-2">
             <span className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
-              ${project.price.toFixed(2)}
+              {formatPrice(project.price, project.currency)}
             </span>
             <span className="text-sm text-muted-foreground">USD</span>
           </div>

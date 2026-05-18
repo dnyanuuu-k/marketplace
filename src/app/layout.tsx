@@ -11,22 +11,30 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Digital Marketplace",
-  description: "A modern digital marketplace platform built with Next.js, Tailwind CSS, and shadcn/ui.",
-  keywords: ["marketplace", "Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "React"],
-  authors: [{ name: "Marketplace Team" }],
+  title: "Albostech Market",
+  description:
+    "Discover and purchase premium digital products — HRMS, Garage Management, and enterprise software from verified Albos Technology creators.",
+  keywords: [
+    "Albostech",
+    "marketplace",
+    "HRMS",
+    "garage management",
+    "enterprise software",
+    "Albos Technology",
+  ],
+  authors: [{ name: "Albos Technology" }],
   icons: {
     icon: "/logo.svg",
   },
   openGraph: {
-    title: "Digital Marketplace",
-    description: "A modern digital marketplace platform",
+    title: "Albostech Market",
+    description: "Premium digital products from Albos Technology",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Digital Marketplace",
-    description: "A modern digital marketplace platform",
+    title: "Albostech Market",
+    description: "Premium digital products from Albos Technology",
   },
 };
 

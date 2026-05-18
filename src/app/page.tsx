@@ -75,9 +75,9 @@ function LoadingScreen() {
       <div className="space-y-4 w-full max-w-sm px-4">
         <div className="flex items-center justify-center gap-2 mb-8">
           <div className="size-10 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold">M</span>
+            <span className="text-primary-foreground font-bold">A</span>
           </div>
-          <span className="font-semibold text-lg">Marketplace</span>
+          <span className="font-semibold text-lg">Albostech Market</span>
         </div>
         <Card>
           <CardContent className="pt-6 space-y-4">

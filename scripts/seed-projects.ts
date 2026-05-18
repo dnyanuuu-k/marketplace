@@ -1,272 +1,168 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const PROJECT_TEMPLATES = [
+const ALBOSTECH_AUTHOR_EMAIL = "author@albostech.com";
+
+const ALBOSTECH_PROJECTS = [
   {
-    title: "Modern Dashboard UI Kit",
-    description: "A comprehensive dashboard UI kit built with React and Tailwind CSS. Includes 50+ components, dark mode support, responsive layouts, and detailed documentation. Perfect for SaaS applications, admin panels, and data visualization tools.",
-    shortDescription: "50+ React dashboard components with dark mode",
-    category: "DESIGN" as const,
-    price: 79,
-    tags: '["React", "Dashboard", "UI Kit", "Tailwind CSS"]',
-    features: '["50+ Components", "Dark Mode", "Responsive", "TypeScript", "Documentation"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj1/600/400",
-    images: '["https://picsum.photos/seed/proj1a/800/600", "https://picsum.photos/seed/proj1b/800/600", "https://picsum.photos/seed/proj1c/800/600"]',
-    demoUrl: "https://dashboard-demo.example.com",
-  },
-  {
-    title: "E-Commerce Starter Template",
-    description: "Full-stack e-commerce template with Next.js 14, Stripe integration, and Prisma. Features product catalog, shopping cart, checkout flow, user authentication, and admin dashboard. Production-ready with SEO optimization.",
-    shortDescription: "Full-stack Next.js e-commerce with Stripe",
+    title: "HRMS — Human Resource Management System",
+    shortDescription:
+      "Full-stack HR portal for SMEs: attendance, leave, payroll, salary slips, and notice board.",
+    description: `Human Resource Management System (HRMS) by Albos Technology — a production-ready platform that digitises core HR operations for small and medium enterprises.
+
+**Dual-portal experience**
+- HR / Admin portal: employee CRUD, attendance import (Excel), leave approvals, holiday master, payroll generation, and notice broadcast
+- Employee portal: monthly attendance calendar, leave applications, digital salary slips, and profile management
+
+**Technology stack**
+- Frontend: Next.js 14 (App Router), Tailwind CSS, React Hook Form
+- Backend: Node.js, Express.js, MongoDB (Mongoose)
+- Auth: JWT with HTTP-only cookies, bcrypt password hashing
+
+**Key modules**
+- Employee management with soft-delete and role-based access (HR / Employee)
+- Attendance: bulk Excel import, manual punch entry, late-mark detection (10:10 AM threshold)
+- Leave workflow: full-day / half-day requests with balance validation and HR approval
+- Payroll: automated gross-to-net calculation with absent, late, and leave deductions
+- Notice board: global announcements and individual notices with read tracking
+- Holiday master: national and company holidays on the employee calendar
+
+**Business rules included**
+- Office hours 10:00 AM – 7:00 PM, Saturday working, Sunday off
+- Every 3 late marks = 1 day salary deduction (carry-forward supported)
+- Digital salary slip with PDF download
+
+Founder: Chandra Prakash Singh | Albos Technology | Version 1.0`,
     category: "DEVELOPMENT" as const,
-    price: 149,
-    tags: '["Next.js", "E-Commerce", "Stripe", "Prisma"]',
-    features: '["Product Catalog", "Shopping Cart", "Stripe Checkout", "Auth System", "Admin Dashboard"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj2/600/400",
-    images: '["https://picsum.photos/seed/proj2a/800/600", "https://picsum.photos/seed/proj2b/800/600"]',
-    demoUrl: "https://ecommerce-demo.example.com",
-  },
-  {
-    title: "AI Content Writer Pro",
-    description: "AI-powered content writing tool with GPT integration. Generate blog posts, social media captions, email templates, and marketing copy. Includes tone adjustment, SEO optimization, and bulk generation features.",
-    shortDescription: "AI writing tool with GPT integration",
-    category: "WRITING" as const,
-    price: 59,
-    tags: '["AI", "Content Writing", "GPT", "SEO"]',
-    features: '["GPT Integration", "Tone Adjustment", "SEO Optimization", "Bulk Generation", "Templates"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj3/600/400",
-    images: '["https://picsum.photos/seed/proj3a/800/600", "https://picsum.photos/seed/proj3b/800/600"]',
-  },
-  {
-    title: "Social Media Marketing Toolkit",
-    description: "Complete social media marketing toolkit with analytics dashboard, post scheduler, engagement tracker, and competitor analysis. Supports Instagram, Twitter, LinkedIn, and Facebook.",
-    shortDescription: "Social media management & analytics toolkit",
-    category: "MARKETING" as const,
-    price: 99,
-    tags: '["Social Media", "Analytics", "Scheduling", "Marketing"]',
-    features: '["Post Scheduler", "Analytics Dashboard", "Competitor Analysis", "Multi-Platform", "Engagement Tracker"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj4/600/400",
-    images: '["https://picsum.photos/seed/proj4a/800/600", "https://picsum.photos/seed/proj4b/800/600"]',
-  },
-  {
-    title: "Video Editing Preset Pack",
-    description: "Professional video editing presets for DaVinci Resolve and Premiere Pro. 200+ color grading presets, transition effects, and motion graphics templates. Perfect for YouTube creators and filmmakers.",
-    shortDescription: "200+ video editing presets & effects",
-    category: "VIDEO" as const,
-    price: 39,
-    tags: '["Video Editing", "Presets", "DaVinci Resolve", "Premiere Pro"]',
-    features: '["200+ Presets", "Color Grading", "Transitions", "Motion Graphics", "4K Support"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj5/600/400",
-    images: '["https://picsum.photos/seed/proj5a/800/600", "https://picsum.photos/seed/proj5b/800/600"]',
-  },
-  {
-    title: "Lo-Fi Beat Collection",
-    description: "Royalty-free lo-fi beat collection with 50 tracks perfect for podcasts, YouTube videos, and streaming. Includes stems, MIDI files, and commercial license. WAV and MP3 formats included.",
-    shortDescription: "50 royalty-free lo-fi beats with stems",
-    category: "MUSIC" as const,
-    price: 49,
-    tags: '["Lo-Fi", "Beats", "Royalty-Free", "Podcast"]',
-    features: '["50 Tracks", "Stems Included", "MIDI Files", "Commercial License", "WAV & MP3"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj6/600/400",
-    images: '["https://picsum.photos/seed/proj6a/800/600"]',
-  },
-  {
-    title: "Data Analytics Dashboard",
-    description: "Interactive data analytics dashboard built with React, D3.js, and Python backend. Features real-time data visualization, custom report builder, data export, and team collaboration tools.",
-    shortDescription: "Interactive analytics with real-time visualization",
-    category: "ANALYTICS" as const,
-    price: 129,
-    tags: '["Analytics", "D3.js", "React", "Python"]',
-    features: '["Real-time Charts", "Report Builder", "Data Export", "Team Collaboration", "Custom Widgets"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj7/600/400",
-    images: '["https://picsum.photos/seed/proj7a/800/600", "https://picsum.photos/seed/proj7b/800/600"]',
-  },
-  {
-    title: "Figma Design System",
-    description: "Complete design system for Figma with 100+ components, auto-layout, variants, and design tokens. Includes mobile and desktop layouts, icons, illustrations, and a comprehensive style guide.",
-    shortDescription: "100+ Figma components with design tokens",
-    category: "DESIGN" as const,
-    price: 69,
-    tags: '["Figma", "Design System", "UI Components", "Tokens"]',
-    features: '["100+ Components", "Auto Layout", "Variants", "Design Tokens", "Style Guide"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj8/600/400",
-    images: '["https://picsum.photos/seed/proj8a/800/600", "https://picsum.photos/seed/proj8b/800/600", "https://picsum.photos/seed/proj8c/800/600"]',
+    price: 2499,
+    currency: "INR",
+    tags: JSON.stringify([
+      "HRMS",
+      "HR",
+      "Payroll",
+      "Attendance",
+      "Next.js",
+      "MongoDB",
+      "SME",
+    ]),
+    features: JSON.stringify([
+      "HR & Employee dual portals",
+      "Excel attendance bulk import",
+      "Leave approval workflow",
+      "Automated monthly payroll",
+      "Digital salary slips (PDF)",
+      "Notice board & holidays",
+      "JWT authentication",
+      "Role-based access control",
+    ]),
+    thumbnailUrl: "/projects/hrms-login.png",
+    images: JSON.stringify([
+      "/projects/hrms-login.png",
+      "/projects/hrms-dashboard.png",
+      "/projects/hrms-employees.png",
+      "/projects/hrms-attendance.png",
+      "/projects/hrms-leaves.png",
+      "/projects/hrms-payroll.png",
+      "/projects/hrms-holidays.png",
+      "/projects/hrms-profile.png",
+    ]),
+    demoUrl: "https://hrms.albostech.com",
     featured: true,
   },
   {
-    title: "SaaS Boilerplate",
-    description: "Production-ready SaaS boilerplate with authentication, billing, teams, notifications, and admin panel. Built with Next.js 14, TypeScript, Prisma, and Stripe. Save weeks of development time.",
-    shortDescription: "Production-ready Next.js SaaS starter",
+    title: "Garage Management System (GMS)",
+    shortDescription:
+      "Android workshop app with job cards, inventory, GST invoicing, payroll exports, and admin console.",
+    description: `Garage Management System (GMS) by Albos Technologies Pvt. Ltd. — a comprehensive mobile-first solution for automobile garages, workshops, and service centres.
+
+**What you get**
+- Android APK (v1.0) for shop-floor operations
+- Web admin console for franchises, garages, users, and platform approvals
+- Secure REST API backend with cloud sync and offline resilience
+
+**Core modules**
+- **Services:** repair orders (job cards), counter sales, GST invoices, payment tracking
+- **Parts & inventory:** catalogue, purchase orders, stock-in, reorder alerts
+- **Accounts:** payment history, accounts payable, daily/monthly/GST reports, Tally export
+- **Customers:** profiles, vehicles, order & invoice history, service reminders
+- **Bookings:** built-in appointment calendar with slot management
+- **More:** garage users, feedback, WhatsApp automation hooks, franchise plans (Basic / Franchise / Premium)
+
+**Role-based access**
+- CEO / Owner: full module access, reports, staff, settings
+- Member (Technician): assigned orders, checklists, inventory view
+- Customer & Vendor portals for status and purchase orders
+
+**Highlights**
+- Real-time job card workflow (Received → In Progress → Ready → Delivered)
+- GST-compliant invoicing with partial payments
+- Multi-garage franchise support with inventory transfer options
+- Tally ERP export for accounting reconciliation
+
+CEO: Chandra Prakash Singh | Pune, Maharashtra, India`,
     category: "DEVELOPMENT" as const,
-    price: 199,
-    tags: '["SaaS", "Boilerplate", "Next.js", "TypeScript"]',
-    features: '["Auth System", "Stripe Billing", "Team Management", "Notifications", "Admin Panel"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj9/600/400",
-    images: '["https://picsum.photos/seed/proj9a/800/600", "https://picsum.photos/seed/proj9b/800/600"]',
-    demoUrl: "https://saas-demo.example.com",
+    price: 3499,
+    currency: "INR",
+    tags: JSON.stringify([
+      "Garage",
+      "GMS",
+      "Android",
+      "Inventory",
+      "Invoicing",
+      "GST",
+      "Workshop",
+    ]),
+    features: JSON.stringify([
+      "Repair orders & job cards",
+      "Parts inventory & purchase orders",
+      "GST invoicing & payments",
+      "Customer & vehicle management",
+      "Built-in booking calendar",
+      "Tally export",
+      "Franchise admin console",
+      "Multi-role access (CEO, Member, Vendor)",
+    ]),
+    thumbnailUrl: "/projects/garage-admin-login.png",
+    images: JSON.stringify([
+      "/projects/garage-admin-login.png",
+      "/projects/garage-admin-franchises.png",
+      "/projects/garage-dashboard.png",
+      "/projects/garage-mobile-home.png",
+    ]),
+    demoUrl: null,
     featured: true,
-  },
-  {
-    title: "SEO Audit Tool",
-    description: "Automated SEO audit tool that analyzes websites for technical SEO issues, content quality, backlinks, and keyword rankings. Generates detailed reports with actionable recommendations.",
-    shortDescription: "Automated SEO audit with actionable insights",
-    category: "MARKETING" as const,
-    price: 89,
-    tags: '["SEO", "Audit", "Analytics", "Reports"]',
-    features: '["Technical SEO", "Content Analysis", "Backlink Checker", "Keyword Tracking", "PDF Reports"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj10/600/400",
-    images: '["https://picsum.photos/seed/proj10a/800/600"]',
-  },
-  {
-    title: "React Native Mobile Kit",
-    description: "React Native mobile app starter kit with 30+ screens, navigation, state management, and push notifications. Works for iOS and Android with Expo. Includes authentication and payment flows.",
-    shortDescription: "30+ React Native screens for iOS & Android",
-    category: "DEVELOPMENT" as const,
-    price: 119,
-    tags: '["React Native", "Mobile", "Expo", "iOS", "Android"]',
-    features: '["30+ Screens", "Navigation", "Push Notifications", "Auth Flow", "Payment Integration"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj11/600/400",
-    images: '["https://picsum.photos/seed/proj11a/800/600", "https://picsum.photos/seed/proj11b/800/600"]',
-    demoUrl: "https://mobile-demo.example.com",
-  },
-  {
-    title: "Brand Identity Template Pack",
-    description: "Complete brand identity template pack with logo variations, color palettes, typography guides, business card designs, social media templates, and brand guidelines document. Fully editable in Adobe Illustrator.",
-    shortDescription: "Complete brand identity with templates",
-    category: "DESIGN" as const,
-    price: 59,
-    tags: '["Branding", "Logo", "Templates", "Illustrator"]',
-    features: '["Logo Variations", "Color Palettes", "Typography Guide", "Business Cards", "Social Media Kit"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj12/600/400",
-    images: '["https://picsum.photos/seed/proj12a/800/600", "https://picsum.photos/seed/proj12b/800/600"]',
-  },
-  {
-    title: "Copywriting Formula Generator",
-    description: "Smart copywriting tool with 20+ proven formulas (AIDA, PAS, BAB, etc.). Generate high-converting sales copy, email sequences, and landing page content. Includes A/B testing templates.",
-    shortDescription: "20+ proven copywriting formulas & templates",
-    category: "WRITING" as const,
-    price: 45,
-    tags: '["Copywriting", "Formulas", "Sales Copy", "Email"]',
-    features: '["20+ Formulas", "A/B Templates", "Sales Copy", "Email Sequences", "Landing Pages"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj13/600/400",
-    images: '["https://picsum.photos/seed/proj13a/800/600"]',
-  },
-  {
-    title: "Real-Time Chat Component",
-    description: "Production-ready real-time chat component built with Socket.io, React, and Node.js. Supports direct messages, group chats, file sharing, typing indicators, and read receipts. Fully customizable.",
-    shortDescription: "Real-time chat with Socket.io & React",
-    category: "DEVELOPMENT" as const,
-    price: 69,
-    tags: '["Chat", "Socket.io", "Real-time", "React"]',
-    features: '["Direct Messages", "Group Chats", "File Sharing", "Typing Indicators", "Read Receipts"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj14/600/400",
-    images: '["https://picsum.photos/seed/proj14a/800/600", "https://picsum.photos/seed/proj14b/800/600"]',
-    demoUrl: "https://chat-demo.example.com",
-  },
-  {
-    title: "Motion Graphics Template Pack",
-    description: "Professional motion graphics templates for After Effects. 100+ animated elements including titles, lower thirds, transitions, and social media overlays. Easy customization with control panels.",
-    shortDescription: "100+ After Effects motion graphics templates",
-    category: "VIDEO" as const,
-    price: 79,
-    tags: '["Motion Graphics", "After Effects", "Templates", "Animation"]',
-    features: '["100+ Elements", "Titles & Lower Thirds", "Transitions", "Social Overlays", "Control Panel"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj15/600/400",
-    images: '["https://picsum.photos/seed/proj15a/800/600"]',
-  },
-  {
-    title: "Podcast Production Toolkit",
-    description: "Complete podcast production toolkit with intro/outro templates, sound effects library, audio processing presets for Audacity and Adobe Audition, and show notes template generator.",
-    shortDescription: "Complete podcast production with templates",
-    category: "MUSIC" as const,
-    price: 55,
-    tags: '["Podcast", "Audio", "Production", "Sound Effects"]',
-    features: '["Intro/Outro Templates", "Sound Effects", "Audio Presets", "Show Notes Generator", "Episode Planner"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj16/600/400",
-    images: '["https://picsum.photos/seed/proj16a/800/600"]',
-  },
-  {
-    title: "Business Intelligence Dashboard",
-    description: "Enterprise-grade BI dashboard with drag-and-drop report builder, SQL query editor, scheduled reports, and role-based access control. Connects to PostgreSQL, MySQL, and BigQuery.",
-    shortDescription: "Enterprise BI dashboard with SQL editor",
-    category: "ANALYTICS" as const,
-    price: 179,
-    tags: '["BI", "Dashboard", "SQL", "Reports"]',
-    features: '["Drag-and-Drop Builder", "SQL Editor", "Scheduled Reports", "RBAC", "Multi-DB Support"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj17/600/400",
-    images: '["https://picsum.photos/seed/proj17a/800/600", "https://picsum.photos/seed/proj17b/800/600"]',
-    featured: true,
-  },
-  {
-    title: "Landing Page Builder Kit",
-    description: "Drag-and-drop landing page builder with 25+ section templates, A/B testing integration, analytics tracking, and form builders. Built with Next.js and includes a visual editor.",
-    shortDescription: "Visual landing page builder with 25+ templates",
-    category: "DESIGN" as const,
-    price: 89,
-    tags: '["Landing Page", "Builder", "Next.js", "A/B Testing"]',
-    features: '["25+ Sections", "Visual Editor", "A/B Testing", "Analytics", "Form Builder"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj18/600/400",
-    images: '["https://picsum.photos/seed/proj18a/800/600", "https://picsum.photos/seed/proj18b/800/600"]',
-    demoUrl: "https://landing-demo.example.com",
-  },
-  {
-    title: "API Development Toolkit",
-    description: "Complete API development toolkit with Express.js starter, authentication middleware, rate limiting, API documentation generator, testing utilities, and deployment scripts for AWS and Docker.",
-    shortDescription: "Express.js API starter with docs & testing",
-    category: "DEVELOPMENT" as const,
-    price: 59,
-    tags: '["API", "Express.js", "REST", "Documentation"]',
-    features: '["Express Starter", "Auth Middleware", "Rate Limiting", "API Docs", "Docker Setup"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj19/600/400",
-    images: '["https://picsum.photos/seed/proj19a/800/600"]',
-  },
-  {
-    title: "Email Marketing Automation",
-    description: "Email marketing automation tool with visual workflow builder, template editor, audience segmentation, A/B testing, and detailed analytics. Supports Mailchimp and SendGrid integration.",
-    shortDescription: "Visual email marketing automation tool",
-    category: "MARKETING" as const,
-    price: 109,
-    tags: '["Email Marketing", "Automation", "Templates", "Analytics"]',
-    features: '["Workflow Builder", "Template Editor", "Segmentation", "A/B Testing", "Analytics"]',
-    thumbnailUrl: "https://picsum.photos/seed/proj20/600/400",
-    images: '["https://picsum.photos/seed/proj20a/800/600", "https://picsum.photos/seed/proj20b/800/600"]',
   },
 ];
 
 async function main() {
-  console.log('🌱 Seeding projects...');
+  console.log("🌱 Seeding Albostech Market projects...");
 
-  const authors = await prisma.user.findMany({
-    where: { role: 'AUTHOR', status: 'ACTIVE' },
+  const author = await prisma.user.findUnique({
+    where: { email: ALBOSTECH_AUTHOR_EMAIL },
     include: { profile: true },
   });
 
-  if (authors.length === 0) {
-    console.error('❌ No active authors found. Run the main seed first.');
+  if (!author) {
+    console.error(
+      `❌ Author not found (${ALBOSTECH_AUTHOR_EMAIL}). Run npm run db:seed first.`
+    );
     process.exit(1);
   }
 
   const buyers = await prisma.user.findMany({
-    where: { role: 'BUYER', status: 'ACTIVE' },
+    where: { role: "BUYER", status: "ACTIVE" },
   });
 
-  // Clear existing projects
   await prisma.projectReview.deleteMany();
-  await prisma.$executeRawUnsafe('UPDATE `Transaction` SET projectId = NULL WHERE projectId IS NOT NULL');
+  await prisma.$executeRawUnsafe(
+    "UPDATE `Transaction` SET projectId = NULL WHERE projectId IS NOT NULL"
+  );
   await prisma.project.deleteMany();
-  console.log('🧹 Cleared existing projects');
+  console.log("🧹 Cleared existing projects");
 
   const projects = [];
-  for (let i = 0; i < PROJECT_TEMPLATES.length; i++) {
-    const template = PROJECT_TEMPLATES[i];
-    const author = authors[i % authors.length];
-    const daysAgo = Math.floor(Math.random() * 60) + 1;
-    const totalSales = Math.floor(Math.random() * 30);
-    const totalViews = totalSales * 15 + Math.floor(Math.random() * 500);
-    const avgRating = 3.5 + Math.random() * 1.5;
-    const reviewCount = Math.floor(totalSales * 0.4);
-
+  for (const template of ALBOSTECH_PROJECTS) {
     const project = await prisma.project.create({
       data: {
         authorId: author.id,
@@ -274,110 +170,89 @@ async function main() {
         description: template.description,
         shortDescription: template.shortDescription,
         category: template.category,
-        status: i < 2 ? 'DRAFT' : 'PUBLISHED',
+        status: "PUBLISHED",
         price: template.price,
+        currency: template.currency,
         thumbnailUrl: template.thumbnailUrl,
         images: template.images,
         tags: template.tags,
         features: template.features,
-        demoUrl: template.demoUrl || null,
-        totalSales,
-        totalViews,
-        averageRating: parseFloat(avgRating.toFixed(1)),
-        reviewCount,
-        featured: template.featured || false,
-        createdAt: new Date(Date.now() - daysAgo * 86400000),
+        demoUrl: template.demoUrl,
+        featured: template.featured,
+        totalSales: template.title.includes("HRMS") ? 12 : 8,
+        totalViews: template.title.includes("HRMS") ? 340 : 210,
+        averageRating: 4.8,
+        reviewCount: 5,
+        createdAt: new Date(Date.now() - 14 * 86400000),
       },
     });
     projects.push(project);
   }
 
-  console.log(`✅ Created ${projects.length} projects`);
+  console.log(`✅ Created ${projects.length} Albostech projects`);
 
-  const publishedProjects = projects.filter(p => p.status === 'PUBLISHED');
-  const COMMISSION_RATE = 0.10;
+  const COMMISSION_RATE = 0.1;
   let purchaseCount = 0;
-
-  for (const project of publishedProjects.slice(0, 8)) {
-    const numPurchases = Math.floor(Math.random() * 3) + 1;
-    const shuffledBuyers = [...buyers].sort(() => Math.random() - 0.5);
-
-    for (let j = 0; j < Math.min(numPurchases, shuffledBuyers.length); j++) {
-      const buyer = shuffledBuyers[j];
+  for (const project of projects) {
+    const shuffledBuyers = [...buyers].sort(() => Math.random() - 0.5).slice(0, 2);
+    for (const buyer of shuffledBuyers) {
       const amount = project.price;
-      const commissionAmount = parseFloat((amount * COMMISSION_RATE).toFixed(2));
+      const commissionAmount = parseFloat(
+        (amount * COMMISSION_RATE).toFixed(2)
+      );
       const netAmount = parseFloat((amount - commissionAmount).toFixed(2));
-
       await prisma.transaction.create({
         data: {
           buyerId: buyer.id,
-          sellerId: project.authorId,
+          sellerId: author.id,
           amount,
           commissionAmount,
           netAmount,
-          status: 'COMPLETED',
-          stripePaymentIntentId: `pi_proj_${purchaseCount}`,
+          status: "COMPLETED",
+          stripePaymentIntentId: `pi_albos_${purchaseCount}`,
           description: `Purchase: ${project.title}`,
           projectId: project.id,
-          createdAt: new Date(Date.now() - Math.floor(Math.random() * 30) * 86400000),
+          createdAt: new Date(Date.now() - 7 * 86400000),
         },
       });
       purchaseCount++;
     }
   }
 
-  console.log(`✅ Created ${purchaseCount} project purchases`);
+  const reviewComments = [
+    "Enterprise-grade HRMS — attendance import and payroll saved our team weeks of manual work.",
+    "Clean Next.js codebase with clear module separation. Documentation matches the delivered product.",
+    "GMS covers our full workshop flow from job card to GST invoice. Tally export is a huge plus.",
+    "Albos Technology delivered exactly what was described. Verified seller — highly recommended.",
+  ];
 
   let reviewCount = 0;
-  for (const project of publishedProjects.slice(0, 5)) {
-    const projectTransactions = await prisma.transaction.findMany({
-      where: { projectId: project.id, status: 'COMPLETED' },
-      take: 3,
+  for (const project of projects) {
+    const txs = await prisma.transaction.findMany({
+      where: { projectId: project.id, status: "COMPLETED" },
+      take: 2,
     });
-
-    for (const tx of projectTransactions) {
-      const rating = Math.floor(Math.random() * 2) + 4;
-      const comments = [
-        "Excellent quality! Exactly what I needed. Very well documented.",
-        "Great project, saved me a lot of time. The code is clean and well-organized.",
-        "Worth every penny. Easy to customize and the support was helpful.",
-        "Very professional work. The documentation is thorough and clear.",
-        "Impressive quality and attention to detail. Highly recommended!",
-      ];
-
+    for (const tx of txs) {
       await prisma.projectReview.create({
         data: {
           projectId: project.id,
           userId: tx.buyerId,
-          rating,
-          comment: comments[reviewCount % comments.length],
-          createdAt: new Date(Date.now() - Math.floor(Math.random() * 20) * 86400000),
+          rating: 5,
+          comment: reviewComments[reviewCount % reviewComments.length],
+          createdAt: new Date(Date.now() - 5 * 86400000),
         },
       });
       reviewCount++;
     }
   }
 
-  console.log(`✅ Created ${reviewCount} project reviews`);
-
-  const projectCount = await prisma.project.count();
-  const publishedCount = await prisma.project.count({ where: { status: 'PUBLISHED' } });
-  const featuredCount = await prisma.project.count({ where: { featured: true } });
-
-  console.log('\n📊 Project Seed Summary:');
-  console.log('─'.repeat(40));
-  console.log(`  Total projects: ${projectCount}`);
-  console.log(`  Published: ${publishedCount}`);
-  console.log(`  Featured: ${featuredCount}`);
-  console.log(`  Project purchases: ${purchaseCount}`);
-  console.log(`  Project reviews: ${reviewCount}`);
-  console.log('─'.repeat(40));
-  console.log('✅ Project seeding completed!');
+  console.log(`✅ ${purchaseCount} purchases, ${reviewCount} reviews`);
+  console.log("✅ Albostech project seeding completed!");
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Seed failed:', e);
+    console.error("❌ Seed failed:", e);
     process.exit(1);
   })
   .finally(async () => {
