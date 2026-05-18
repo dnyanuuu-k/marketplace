@@ -1,0 +1,39 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: 0.0.0.0
+      DATABASE_URL: file:/app/db/custom.db
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:?Set NEXTAUTH_SECRET in .env}
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost}
+    volumes:
+      - ./db:/app/db
+    expose:
+      - "3000"
+
+  chat:
+    image: oven/bun:1-alpine
+    restart: unless-stopped
+    working_dir: /app
+    command: ["bun", "index.ts"]
+    environment:
+      DATABASE_PATH: /app/db/custom.db
+    volumes:
+      - ./mini-services/chat-service:/app:ro
+      - ./db:/app/db
+    expose:
+      - "3003"
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-80}:81"
+    volumes:
+      - ./Caddyfile.docker:/etc/caddy/Caddyfile:ro
+    depends_on:
+      - app
+      - chat

@@ -1,0 +1,12 @@
+{
+  "name": "chat-service",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "bun --hot index.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.2",
+    "cors": "^2.8.5",
+    "socket.io": "^4.7.0"
+  }
+}
