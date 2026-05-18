@@ -10,4 +10,5 @@ export const db =
     log: process.env.NODE_ENV === "development" ? ["query"] : [],
   })
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
+// Reuse one client per serverless instance (avoids exhausting MySQL connections on Vercel).
+globalForPrisma.prisma = db

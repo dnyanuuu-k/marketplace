@@ -1,6 +1,11 @@
 import { cpSync, existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 
+if (process.env.VERCEL) {
+  console.log("Skipping standalone asset copy on Vercel");
+  process.exit(0);
+}
+
 const root = process.cwd();
 const standaloneDir = join(root, ".next", "standalone");
 

@@ -254,9 +254,11 @@ async function main() {
     'PlatformSetting',
     'User',
   ];
+  await prisma.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 0');
   for (const table of tables) {
-    await prisma.$executeRawUnsafe(`DELETE FROM "${table}"`);
+    await prisma.$executeRawUnsafe(`DELETE FROM \`${table}\``);
   }
+  await prisma.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 1');
   console.log('✅ All tables cleaned.');
 
   // Hash password
